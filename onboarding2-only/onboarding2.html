@@ -115,7 +115,7 @@
         position: fixed;
         transform: translate(-50%, -50%);
         pointer-events: none;
-        z-index: 9999;
+        z-index: 10001;
         transition: width 0.3s, height 0.3s, border-color 0.3s,
           background-color 0.3s;
         backdrop-filter: invert(100%);
@@ -129,7 +129,7 @@
         position: fixed;
         transform: translate(-50%, -50%);
         pointer-events: none;
-        z-index: 10000;
+        z-index: 10002;
         transition: width 0.2s, height 0.2s, background-color 0.2s;
       }
 
@@ -137,8 +137,8 @@
       .hoverable:hover ~ .cursor {
         width: 50px;
         height: 50px;
-        border-color: rgba(113, 11, 255, 0.5);
-        background-color: rgba(113, 11, 255, 0.1);
+        border-color: rgba(29, 20, 39, 0.5); /* Changed to #1d1427 */
+        background-color: rgba(29, 20, 39, 0.1); /* Changed to #1d1427 */
       }
 
       /* Glassmorphism effect */
@@ -263,7 +263,9 @@
 
       .logo-animation:hover {
         transform: scale(1.05);
-        filter: drop-shadow(0 0 10px rgba(113, 11, 255, 0.5));
+        filter: drop-shadow(
+          0 0 10px rgba(29, 20, 39, 0.5)
+        ); /* Changed to #1d1427 */
       }
 
       /* Modal animations */
@@ -307,7 +309,7 @@
         z-index: -2;
       }
 
-      /* Subtle light pillars */
+      /* Enhanced light pillars with dramatic effects */
       .light-pillar {
         position: absolute;
         width: 1px;
@@ -315,13 +317,32 @@
           to top,
           transparent,
           rgba(113, 11, 255, 0.05),
-          rgba(113, 11, 255, 0.1),
+          rgba(113, 11, 255, 0.15),
+          rgba(255, 255, 255, 0.2),
+          rgba(113, 11, 255, 0.15),
           rgba(113, 11, 255, 0.05),
           transparent
         );
         opacity: 0;
         transform-origin: bottom center;
         z-index: -1;
+        filter: blur(1px) drop-shadow(0 0 8px rgba(113, 11, 255, 0.3));
+        transition: all 0.5s ease;
+      }
+
+      .light-pillar.main {
+        width: 2px;
+        background: linear-gradient(
+          to top,
+          transparent,
+          rgba(113, 11, 255, 0.1),
+          rgba(113, 11, 255, 0.2),
+          rgba(255, 255, 255, 0.3),
+          rgba(113, 11, 255, 0.2),
+          rgba(113, 11, 255, 0.1),
+          transparent
+        );
+        filter: blur(2px) drop-shadow(0 0 15px rgba(113, 11, 255, 0.5));
       }
 
       /* Page transition */
@@ -377,12 +398,18 @@
         />
       </div>
 
-      <!-- Client Logo -->
+      <!-- Enhanced Client Logo -->
       <div class="logo-container opacity-0">
         <img
           src="https://i.postimg.cc/xTmWPrpj/Windows-and-Doors-1-Edited.png"
           alt="Client Logo"
-          class="h-16 logo-animation hoverable"
+          class="h-32 logo-animation hoverable"
+          style="
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+            transition: all 0.5s ease;
+          "
+          onmouseover="this.style.transform='scale(1.05)'; this.style.filter='drop-shadow(0 0 15px rgba(255, 255, 255, 0.5))'"
+          onmouseout="this.style.transform='scale(1)'; this.style.filter='drop-shadow(0 0 10px rgba(255, 255, 255, 0.3))'"
         />
       </div>
     </header>
@@ -400,7 +427,7 @@
         <h1
           class="font-display text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-tight gradient-text pb-4"
         >
-          Welcome to Exclusivity
+          Claim Your Competitive Weapon
         </h1>
 
         <!-- Animated Accent Line -->
@@ -412,8 +439,7 @@
         <p
           class="font-body text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto font-light tracking-wide leading-relaxed"
         >
-          We've been expecting you. Your premium onboarding experience begins
-          now.
+          We've been expecting you... Your unfair advantage begins now.
         </p>
 
         <!-- Premium CTA Button -->
@@ -451,6 +477,7 @@
     <div
       id="modalOverlay"
       class="fixed inset-0 bg-black bg-opacity-75 backdrop-blur-md z-40 hidden items-center justify-center transition-all duration-700 ease-in-out opacity-0"
+      style="pointer-events: auto"
     >
       <!-- Modal Container with Premium Styling -->
       <div
@@ -506,9 +533,9 @@
           <div
             class="absolute inset-4 md:inset-6 z-10 rounded-2xl overflow-hidden shadow-elegant"
           >
-            <!-- Your Logo -->
+            <!-- Your Logo with Premium Title -->
             <div
-              class="absolute top-6 left-6 opacity-90 z-20 animate-fade-in"
+              class="absolute top-6 left-6 opacity-90 z-20 animate-fade-in flex items-center"
               style="animation-delay: 300ms"
             >
               <img
@@ -516,6 +543,19 @@
                 alt="Company Logo"
                 class="h-12 logo-animation"
               />
+              <div class="ml-4 flex flex-col">
+                <h3
+                  class="text-white text-xl font-display font-semibold tracking-wider"
+                >
+                  Elevation
+                </h3>
+                <div
+                  class="h-0.5 w-full bg-gradient-to-r from-transparent via-brand to-transparent"
+                ></div>
+                <p class="text-white/80 text-sm font-light tracking-widest">
+                  ONBOARDING EXPERIENCE
+                </p>
+              </div>
             </div>
 
             <!-- Client Logo -->
@@ -526,7 +566,7 @@
               <img
                 src="https://i.postimg.cc/xTmWPrpj/Windows-and-Doors-1-Edited.png"
                 alt="Client Logo"
-                class="h-12 logo-animation"
+                class="h-16 logo-animation"
               />
             </div>
           </div>
@@ -640,8 +680,8 @@
       hoverables.forEach((hoverable) => {
         hoverable.addEventListener("mouseenter", () => {
           cursor.style.transform = "translate(-50%, -50%) scale(1.5)";
-          cursor.style.borderColor = "rgba(113, 11, 255, 0.6)";
-          cursorDot.style.backgroundColor = "rgba(113, 11, 255, 1)";
+          cursor.style.borderColor = "rgba(29, 20, 39, 0.6)"; // Changed to #1d1427
+          cursorDot.style.backgroundColor = "rgba(29, 20, 39, 1)"; // Changed to #1d1427
           cursorDot.style.transform = "translate(-50%, -50%) scale(1.5)";
         });
 
@@ -798,26 +838,35 @@
                         // Combine noise layers for rich texture
                         float finalNoise = noise1 * 0.5 + noise2 * 0.3 + noise3 * 0.2;
                         
-                        // Create a subtle vignette effect
+                        // Create an enhanced vignette effect with more depth
                         vec2 center = vUv - 0.5;
-                        float vignette = 1.0 - dot(center, center) * 0.7;
+                        float vignette = 1.0 - dot(center, center) * 0.9;
                         
-                        // Mouse interaction - subtle glow around cursor
+                        // Enhanced mouse interaction - more dramatic glow around cursor
                         float mouseDistance = distance(vUv, mousePosition);
-                        float mouseGlow = smoothstep(0.3, 0.0, mouseDistance) * 0.15;
+                        float mouseGlow = smoothstep(0.4, 0.0, mouseDistance) * 0.3;
                         
-                        // Create a subtle color gradient based on position and noise
-                        vec3 baseColor = vec3(0.04, 0.02, 0.06); // Dark purple-black
-                        vec3 accentColor = brandColor * 0.15; // Subtle brand color
+                        // Create a richer color gradient with more depth
+                        vec3 baseColor = vec3(0.03, 0.01, 0.05); // Deeper dark purple-black
+                        vec3 accentColor = brandColor * 0.25; // More vibrant brand color
+                        vec3 highlightColor = vec3(0.6, 0.4, 0.9) * 0.15; // Subtle highlight color
                         
-                        // Mix colors based on noise and position
-                        vec3 finalColor = mix(baseColor, accentColor, finalNoise * vignette * 0.3);
+                        // Create a pulsing effect
+                        float pulse = (sin(time * 0.5) * 0.5 + 0.5) * 0.1;
                         
-                        // Add extremely subtle mouse glow
-                        finalColor = mix(finalColor, accentColor * 0.8, mouseGlow);
+                        // Add subtle light rays
+                        float rays = pow(abs(sin(atan(center.y, center.x) * 8.0 + time * 0.2)), 10.0) * 0.1;
+                        rays *= smoothstep(0.5, 0.2, length(center));
                         
-                        // Apply vignette and very subtle noise texture
-                        gl_FragColor = vec4(finalColor, finalNoise * vignette * 0.4 + 0.05);
+                        // Mix colors based on noise, position, and effects
+                        vec3 finalColor = mix(baseColor, accentColor, finalNoise * vignette * 0.5);
+                        finalColor = mix(finalColor, highlightColor, rays * (pulse + 0.1));
+                        
+                        // Add enhanced mouse glow with color variation
+                        finalColor = mix(finalColor, accentColor * 1.2, mouseGlow);
+                        
+                        // Apply enhanced vignette and richer noise texture
+                        gl_FragColor = vec4(finalColor, finalNoise * vignette * 0.5 + 0.08);
                     }
                 `,
           transparent: true,
@@ -888,15 +937,23 @@
                         }
                         
                         void main() {
-                            // Create flowing veil effect with depth variation
+                            // Create enhanced flowing veil effect with depth variation
                             float speed = 0.05 - depth * 0.03; // Deeper veils move slower
                             float scale = 2.0 + depth * 3.0; // Deeper veils have larger patterns
                             
-                            float noise = snoise(vec2(vUv.x * scale + time * speed, vUv.y * scale - time * speed * 0.7)) * 0.5 + 0.5;
+                            // Create more complex noise patterns
+                            float noise1 = snoise(vec2(vUv.x * scale + time * speed, vUv.y * scale - time * speed * 0.7)) * 0.5 + 0.5;
+                            float noise2 = snoise(vec2(vUv.x * (scale*1.5) - time * speed * 0.5, vUv.y * (scale*0.8) + time * speed * 0.3)) * 0.5 + 0.5;
+                            float noise = mix(noise1, noise2, 0.5 + sin(time * 0.2) * 0.2);
                             
-                            // Create vertical light veil effect
-                            float veil = smoothstep(0.4, 0.6, noise);
-                            veil *= smoothstep(0.0, 0.3, vUv.y) * smoothstep(1.0, 0.7, vUv.y); // Fade top and bottom
+                            // Create enhanced vertical light veil effect with pulsing
+                            float pulse = sin(time * 0.3 + depth * 2.0) * 0.5 + 0.5;
+                            float veil = smoothstep(0.35 + pulse * 0.1, 0.65 - pulse * 0.1, noise);
+                            
+                            // Create more dramatic fade effects
+                            float edgeFade = smoothstep(0.0, 0.4, vUv.y) * smoothstep(1.0, 0.6, vUv.y); // Enhanced fade top and bottom
+                            float sideFade = smoothstep(0.0, 0.2, vUv.x) * smoothstep(1.0, 0.8, vUv.x); // Subtle fade on sides
+                            veil *= edgeFade * (sideFade * 0.5 + 0.5);
                             
                             // Apply brand color with depth-based opacity
                             float opacity = veil * 0.03 * (1.0 - depth * 0.5); // Very subtle
@@ -1111,49 +1168,68 @@
         animate();
       };
 
-      // Create light pillars for an ultra-premium effect
+      // Create enhanced light pillars for a jaw-dropping premium effect
       const createLightPillars = () => {
         const container = document.getElementById("light-pillars-container");
-        const pillarsCount = 8;
+        const pillarsCount = 12; // Increased number of pillars
         const pillars = [];
 
-        // Create light pillars
+        // Create light pillars with varying properties
         for (let i = 0; i < pillarsCount; i++) {
           const pillar = document.createElement("div");
-          pillar.className = "light-pillar";
 
-          // Set random properties for each pillar
-          const height = Math.random() * 40 + 60; // Height between 60-100vh
+          // Determine if this is a main (more prominent) pillar
+          const isMainPillar = Math.random() > 0.7; // 30% chance of being a main pillar
+          pillar.className = isMainPillar
+            ? "light-pillar main"
+            : "light-pillar";
+
+          // Set enhanced random properties for each pillar
+          const height = Math.random() * 50 + (isMainPillar ? 70 : 60); // Height between 60-110vh or 70-120vh for main
           const left = Math.random() * 100; // Position across the screen
           const delay = Math.random() * 5; // Random delay for animation
-          const duration = Math.random() * 4 + 8; // Duration between 8-12s
+          const duration = Math.random() * 4 + (isMainPillar ? 10 : 8); // Longer duration for main pillars
 
-          // Apply styles
+          // Apply enhanced styles
           pillar.style.height = `${height}vh`;
           pillar.style.left = `${left}%`;
           pillar.style.bottom = "0";
+
+          // Add subtle rotation for more dynamic effect
+          pillar.style.transform = `rotate(${(Math.random() - 0.5) * 2}deg)`;
 
           // Add to container
           container.appendChild(pillar);
           pillars.push(pillar);
 
-          // Animate with GSAP
+          // Animate with enhanced GSAP effects
           gsap.to(pillar, {
-            opacity: 0.3,
-            duration: 2,
+            opacity: isMainPillar ? 0.5 : 0.3,
+            duration: 2.5,
             delay: delay,
             ease: "power2.out",
           });
 
-          // Create continuous subtle animation
+          // Create continuous enhanced animation
           gsap.to(pillar, {
-            scaleY: 1.1,
-            opacity: 0.1,
+            scaleY: isMainPillar ? 1.15 : 1.1,
+            opacity: isMainPillar ? 0.25 : 0.15,
             duration: duration,
             repeat: -1,
             yoyo: true,
             ease: "sine.inOut",
           });
+
+          // Add pulsing glow effect for main pillars
+          if (isMainPillar) {
+            gsap.to(pillar, {
+              filter: `blur(3px) drop-shadow(0 0 20px rgba(113, 11, 255, 0.7))`,
+              duration: 4 + Math.random() * 3,
+              repeat: -1,
+              yoyo: true,
+              ease: "sine.inOut",
+            });
+          }
         }
       };
 
