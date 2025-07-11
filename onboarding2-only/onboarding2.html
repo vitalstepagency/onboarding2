@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exclusive Client Onboarding | Premium Experience</title>
+
+    <!-- Core Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Montserrat", "sans-serif"],
+              display: ["Playfair Display", "serif"],
+              body: ["Montserrat", "sans-serif"],
+            },
+            colors: {
+              brand: {
+                DEFAULT: "#710bff",
+                light: "#8a3dff",
+                dark: "#5a09cc",
+                50: "#f4ebff",
+                100: "#e9d7ff",
+                200: "#d3afff",
+                300: "#bd87ff",
+                400: "#a75fff",
+                500: "#9137ff",
+                600: "#7b0dff",
+                700: "#6700e6",
+                800: "#5500bd",
+                900: "#440094",
+              },
+              dark: {
+                DEFAULT: "#0a0a0a",
+                50: "#1a1a1a",
+                100: "#2a2a2a",
+              },
+            },
+            animation: {
+              "fade-in": "fadeIn 1.5s ease-in-out forwards",
+              "slide-up": "slideUp 1s ease-out forwards",
+              "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+              float: "float 6s ease-in-out infinite",
+              shimmer: "shimmer 2.5s linear infinite",
+              glow: "glow 2s ease-in-out infinite",
+            },
+            keyframes: {
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+              slideUp: {
+                "0%": { transform: "translateY(30px)", opacity: "0" },
+                "100%": { transform: "translateY(0)", opacity: "1" },
+              },
+              float: {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-15px)" },
+              },
+              shimmer: {
+                "0%": { backgroundPosition: "-200% 0" },
+                "100%": { backgroundPosition: "200% 0" },
+              },
+              glow: {
+                "0%, 100%": { boxShadow: "0 0 15px 0 rgba(113, 11, 255, 0.4)" },
+                "50%": { boxShadow: "0 0 30px 5px rgba(113, 11, 255, 0.7)" },
+              },
+            },
+            boxShadow: {
+              elegant: "0 10px 50px -12px rgba(0, 0, 0, 0.05)",
+              premium: "0 20px 80px -12px rgba(113, 11, 255, 0.15)",
+              ultra: "0 30px 100px -12px rgba(113, 11, 255, 0.25)",
+              glow: "0 0 20px rgba(113, 11, 255, 0.5)",
+            },
+            backgroundImage: {
+              "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+              "glass-gradient":
+                "linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom Styling -->
+    <style>
+      /* Custom cursor styling */
+      body {
+        cursor: none;
+        background-color: #0a0a0a;
+        overflow-x: hidden;
+      }
+
+      /* Custom cursor */
+      .cursor {
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(113, 11, 255, 0.7);
+        border-radius: 50%;
+        position: fixed;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 9999;
+        transition: width 0.3s, height 0.3s, border-color 0.3s,
+          background-color 0.3s;
+        backdrop-filter: invert(100%);
+      }
+
+      .cursor-dot {
+        width: 6px;
+        height: 6px;
+        background-color: rgba(113, 11, 255, 1);
+        border-radius: 50%;
+        position: fixed;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 10000;
+        transition: width 0.2s, height 0.2s, background-color 0.2s;
+      }
+
+      /* Cursor hover effect */
+      .hoverable:hover ~ .cursor {
+        width: 50px;
+        height: 50px;
+        border-color: rgba(113, 11, 255, 0.5);
+        background-color: rgba(113, 11, 255, 0.1);
+      }
+
+      /* Glassmorphism effect */
+      .glass {
+        background: rgba(113, 11, 255, 0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      /* Noise texture overlay */
+      .noise {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=");
+        pointer-events: none;
+        z-index: 100;
+        opacity: 0.4;
+      }
+
+      /* Gradient text */
+      .gradient-text {
+        background: linear-gradient(135deg, #710bff, #a75fff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      /* Accent line animation */
+      .accent-line {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .accent-line::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(113, 11, 255, 0.7),
+          transparent
+        );
+        animation: shimmer 2s infinite;
+      }
+
+      /* Button glow effect */
+      .btn-glow {
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+      }
+
+      .btn-glow::before {
+        content: "";
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, #710bff, #a75fff, #710bff);
+        background-size: 400%;
+        z-index: -1;
+        animation: glowing 20s linear infinite;
+        filter: blur(10px);
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        border-radius: inherit;
+      }
+
+      .btn-glow:hover::before {
+        opacity: 1;
+      }
+
+      @keyframes glowing {
+        0% {
+          background-position: 0 0;
+        }
+        50% {
+          background-position: 400% 0;
+        }
+        100% {
+          background-position: 0 0;
+        }
+      }
+
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #0a0a0a;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #710bff;
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #8a3dff;
+      }
+
+      /* Logo animations */
+      .logo-animation {
+        transition: transform 0.5s ease, filter 0.5s ease;
+      }
+
+      .logo-animation:hover {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 10px rgba(113, 11, 255, 0.5));
+      }
+
+      /* Modal animations */
+      .modal-enter {
+        animation: modalEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      @keyframes modalEnter {
+        0% {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* Ethereal canvas */
+      #ethereal-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+
+      /* Luxury gradient background */
+      .luxury-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(20, 10, 30, 1) 0%,
+          rgba(10, 5, 15, 1) 100%
+        );
+        z-index: -2;
+      }
+
+      /* Subtle light pillars */
+      .light-pillar {
+        position: absolute;
+        width: 1px;
+        background: linear-gradient(
+          to top,
+          transparent,
+          rgba(113, 11, 255, 0.05),
+          rgba(113, 11, 255, 0.1),
+          rgba(113, 11, 255, 0.05),
+          transparent
+        );
+        opacity: 0;
+        transform-origin: bottom center;
+        z-index: -1;
+      }
+
+      /* Page transition */
+      .page-transition {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #0a0a0a;
+        z-index: 9998;
+        transform: translateY(100%);
+        transition: transform 0.7s cubic-bezier(0.7, 0, 0.3, 1);
+      }
+
+      .page-transition.active {
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body
+    class="text-white min-h-screen opacity-0 transition-opacity duration-1000 ease-in-out"
+  >
+    <!-- Luxury Background Gradient -->
+    <div class="luxury-bg"></div>
+
+    <!-- Ethereal Canvas Background -->
+    <canvas id="ethereal-canvas"></canvas>
+
+    <!-- Noise Texture Overlay -->
+    <div class="noise"></div>
+
+    <!-- Light Pillars -->
+    <div id="light-pillars-container"></div>
+
+    <!-- Custom Cursor Elements -->
+    <div class="cursor"></div>
+    <div class="cursor-dot"></div>
+
+    <!-- Page Transition Element -->
+    <div class="page-transition"></div>
+
+    <!-- Header with Logos -->
+    <header
+      class="fixed top-0 left-0 w-full z-50 px-8 py-6 flex justify-between items-center"
+    >
+      <!-- Your Logo -->
+      <div class="logo-container opacity-0">
+        <img
+          src="https://i.postimg.cc/wMxJWdgt/Asset-4.png"
+          alt="Company Logo"
+          class="h-24 logo-animation hoverable"
+        />
+      </div>
+
+      <!-- Client Logo -->
+      <div class="logo-container opacity-0">
+        <img
+          src="https://i.postimg.cc/xTmWPrpj/Windows-and-Doors-1-Edited.png"
+          alt="Client Logo"
+          class="h-16 logo-animation hoverable"
+        />
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main
+      class="w-full min-h-screen flex flex-col items-center justify-center px-4 relative z-10"
+    >
+      <!-- Hero Section -->
+      <section
+        class="text-center max-w-4xl mx-auto space-y-8 opacity-0 transform translate-y-10"
+        id="hero-section"
+      >
+        <!-- Headline with Gradient -->
+        <h1
+          class="font-display text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-tight gradient-text pb-4"
+        >
+          Welcome to Exclusivity
+        </h1>
+
+        <!-- Animated Accent Line -->
+        <div
+          class="accent-line h-px w-32 md:w-48 bg-brand-400/30 mx-auto"
+        ></div>
+
+        <!-- Elegant Subheadline -->
+        <p
+          class="font-body text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto font-light tracking-wide leading-relaxed"
+        >
+          We've been expecting you. Your premium onboarding experience begins
+          now.
+        </p>
+
+        <!-- Premium CTA Button -->
+        <div class="pt-10">
+          <button
+            id="onboardingButton"
+            class="btn-glow bg-brand px-14 py-6 rounded-xl text-lg md:text-xl font-medium tracking-wide transform transition-all duration-500 ease-out hover:scale-105 hover:shadow-glow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand relative overflow-hidden group hoverable"
+          >
+            <!-- Button text -->
+            <span class="relative z-10 flex items-center justify-center">
+              <span>Begin Your Journey</span>
+
+              <!-- Arrow icon -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 ml-2 transform transition-transform duration-500 group-hover:translate-x-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M14 5l7 7m0 0l-7 7m7-7H3"
+                />
+              </svg>
+            </span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Premium Modal Overlay (Hidden by default) -->
+    <div
+      id="modalOverlay"
+      class="fixed inset-0 bg-black bg-opacity-75 backdrop-blur-md z-40 hidden items-center justify-center transition-all duration-700 ease-in-out opacity-0"
+    >
+      <!-- Modal Container with Premium Styling -->
+      <div
+        id="modalContainer"
+        class="glass rounded-3xl shadow-ultra w-full max-w-4xl mx-4 relative transform transition-all duration-700 ease-in-out scale-95 opacity-0 max-h-[90vh] overflow-hidden border border-brand/20"
+      >
+        <!-- Premium Modal Header Accent -->
+        <div
+          class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-brand-dark via-brand to-brand-light opacity-80"
+        ></div>
+
+        <!-- Corner Accents -->
+        <div
+          class="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-brand/20 rounded-tl-3xl pointer-events-none"
+        ></div>
+        <div
+          class="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-brand/20 rounded-tr-3xl pointer-events-none"
+        ></div>
+        <div
+          class="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-brand/20 rounded-bl-3xl pointer-events-none"
+        ></div>
+        <div
+          class="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-brand/20 rounded-br-3xl pointer-events-none"
+        ></div>
+
+        <!-- Enhanced Close Button -->
+        <button
+          id="closeModal"
+          class="absolute top-6 right-6 text-white hover:text-brand focus:outline-none z-50 transition-all duration-300 ease-in-out transform hover:rotate-90 hover:scale-110 group hoverable"
+        >
+          <div
+            class="absolute inset-0 bg-brand/10 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"
+          ></div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-7 w-7"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
+        <!-- Enhanced iFrame Container -->
+        <div class="w-full h-[80vh] relative bg-dark">
+          <!-- Premium Content Frame -->
+          <div
+            class="absolute inset-4 md:inset-6 z-10 rounded-2xl overflow-hidden shadow-elegant"
+          >
+            <!-- Your Logo -->
+            <div
+              class="absolute top-6 left-6 opacity-90 z-20 animate-fade-in"
+              style="animation-delay: 300ms"
+            >
+              <img
+                src="https://i.postimg.cc/wMxJWdgt/Asset-4.png"
+                alt="Company Logo"
+                class="h-12 logo-animation"
+              />
+            </div>
+
+            <!-- Client Logo -->
+            <div
+              class="absolute top-6 right-6 opacity-90 z-20 animate-fade-in"
+              style="animation-delay: 400ms"
+            >
+              <img
+                src="https://i.postimg.cc/xTmWPrpj/Windows-and-Doors-1-Edited.png"
+                alt="Client Logo"
+                class="h-12 logo-animation"
+              />
+            </div>
+          </div>
+
+          <!-- Premium iframe container -->
+          <div class="w-full h-full overflow-hidden">
+            <!-- Loading indicator -->
+            <div
+              id="iframeLoader"
+              class="absolute inset-0 flex items-center justify-center bg-dark z-10"
+            >
+              <div class="relative">
+                <!-- Pulsing circle animation -->
+                <div
+                  class="absolute inset-0 rounded-full bg-brand/20 animate-pulse-slow"
+                ></div>
+                <!-- Animated loader -->
+                <div class="relative z-10 animate-float">
+                  <svg width="80" height="80" viewBox="0 0 100 100">
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      stroke="rgba(113, 11, 255, 0.2)"
+                      stroke-width="8"
+                      fill="none"
+                    />
+                    <path
+                      d="M50 10 A40 40 0 0 1 90 50"
+                      stroke="#710bff"
+                      stroke-width="8"
+                      fill="none"
+                      stroke-linecap="round"
+                    >
+                      <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 50 50"
+                        to="360 50 50"
+                        dur="1.5s"
+                        repeatCount="indefinite"
+                      />
+                    </path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Enhanced iframe -->
+            <iframe
+              src="https://api.leadconnectorhq.com/widget/form/siys9ff85sAlI6iguTa3"
+              style="
+                width: 100%;
+                height: 100%;
+                border: none;
+                border-radius: 0;
+                overflow: hidden;
+                background: transparent;
+              "
+              id="popup-siys9ff85sAlI6iguTa3"
+              data-layout="{'id':'POPUP'}"
+              data-trigger-type="alwaysShow"
+              data-trigger-value=""
+              data-activation-type="alwaysActivated"
+              data-activation-value=""
+              data-deactivation-type="neverDeactivate"
+              data-deactivation-value=""
+              data-form-name="Client Onboarding - VitalStepAgency"
+              data-height="2405"
+              data-layout-iframe-id="popup-siys9ff85sAlI6iguTa3"
+              data-form-id="siys9ff85sAlI6iguTa3"
+              title="Client Onboarding - VitalStepAgency"
+              scrolling="no"
+              onload="document.getElementById('iframeLoader').style.display='none';"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript for Premium Experience -->
+    <script>
+      // Define brand color for consistent use
+      const brandColor = "#710bff";
+      document.documentElement.style.setProperty("--brand-color", brandColor);
+
+      // Custom cursor functionality
+      const cursor = document.querySelector(".cursor");
+      const cursorDot = document.querySelector(".cursor-dot");
+
+      document.addEventListener("mousemove", (e) => {
+        // Main cursor follows with slight delay
+        gsap.to(cursor, {
+          x: e.clientX,
+          y: e.clientY,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+
+        // Cursor dot follows immediately
+        gsap.to(cursorDot, {
+          x: e.clientX,
+          y: e.clientY,
+          duration: 0.1,
+          ease: "power1.out",
+        });
+      });
+
+      // Hover effect for interactive elements
+      const hoverables = document.querySelectorAll(".hoverable");
+      hoverables.forEach((hoverable) => {
+        hoverable.addEventListener("mouseenter", () => {
+          cursor.style.transform = "translate(-50%, -50%) scale(1.5)";
+          cursor.style.borderColor = "rgba(113, 11, 255, 0.6)";
+          cursorDot.style.backgroundColor = "rgba(113, 11, 255, 1)";
+          cursorDot.style.transform = "translate(-50%, -50%) scale(1.5)";
+        });
+
+        hoverable.addEventListener("mouseleave", () => {
+          cursor.style.transform = "translate(-50%, -50%) scale(1)";
+          cursor.style.borderColor = "rgba(113, 11, 255, 0.7)";
+          cursorDot.style.backgroundColor = "rgba(113, 11, 255, 1)";
+          cursorDot.style.transform = "translate(-50%, -50%) scale(1)";
+        });
+      });
+
+      // Hide cursor when mouse leaves window
+      document.addEventListener("mouseout", () => {
+        cursor.style.opacity = "0";
+        cursorDot.style.opacity = "0";
+      });
+
+      document.addEventListener("mouseover", () => {
+        cursor.style.opacity = "1";
+        cursorDot.style.opacity = "1";
+      });
+
+      // Ethereal Background System - A sophisticated artistic implementation inspired by luxury and exclusivity
+      const initEtherealBackground = () => {
+        // Create light pillars
+        createLightPillars();
+
+        // Initialize the ethereal canvas
+        const canvas = document.getElementById("ethereal-canvas");
+        const renderer = new THREE.WebGLRenderer({
+          canvas,
+          antialias: true,
+          alpha: true,
+        });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+          50,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          2000
+        );
+        camera.position.z = 1000;
+
+        // Create a more sophisticated, artistic background
+
+        // 1. Ethereal Mist - Subtle flowing background
+        const mistGeometry = new THREE.PlaneGeometry(2000, 2000, 128, 128);
+
+        // Custom shader for the ethereal mist
+        const mistMaterial = new THREE.ShaderMaterial({
+          uniforms: {
+            time: { value: 0 },
+            resolution: {
+              value: new THREE.Vector2(window.innerWidth, window.innerHeight),
+            },
+            mousePosition: { value: new THREE.Vector2(0.5, 0.5) },
+            brandColor: { value: new THREE.Color(0x710bff) },
+          },
+          vertexShader: `
+                    varying vec2 vUv;
+                    uniform float time;
+                    
+                    // Simplex noise functions
+                    vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+                    
+                    float snoise(vec2 v) {
+                        const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+                                -0.577350269189626, 0.024390243902439);
+                        vec2 i  = floor(v + dot(v, C.yy));
+                        vec2 x0 = v -   i + dot(i, C.xx);
+                        vec2 i1;
+                        i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+                        vec4 x12 = x0.xyxy + C.xxzz;
+                        x12.xy -= i1;
+                        i = mod(i, 289.0);
+                        vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+                        + i.x + vec3(0.0, i1.x, 1.0 ));
+                        vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy),
+                                dot(x12.zw,x12.zw)), 0.0);
+                        m = m*m ;
+                        m = m*m ;
+                        vec3 x = 2.0 * fract(p * C.www) - 1.0;
+                        vec3 h = abs(x) - 0.5;
+                        vec3 ox = floor(x + 0.5);
+                        vec3 a0 = x - ox;
+                        m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+                        vec3 g;
+                        g.x  = a0.x  * x0.x  + h.x  * x0.y;
+                        g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+                        return 130.0 * dot(m, g);
+                    }
+                    
+                    void main() {
+                        vUv = uv;
+                        
+                        // Create subtle flowing movement
+                        float elevation = snoise(vec2(position.x * 0.01 + time * 0.05, position.y * 0.01 - time * 0.03)) * 5.0;
+                        elevation += snoise(vec2(position.x * 0.02 - time * 0.07, position.y * 0.02 + time * 0.04)) * 2.5;
+                        elevation += snoise(vec2(position.x * 0.04 + time * 0.1, position.y * 0.04 - time * 0.08)) * 1.25;
+                        
+                        // Apply very subtle elevation to create a sense of depth
+                        vec3 newPosition = position + normal * elevation * 0.8;
+                        
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+                    }
+                `,
+          fragmentShader: `
+                    uniform float time;
+                    uniform vec2 resolution;
+                    uniform vec2 mousePosition;
+                    uniform vec3 brandColor;
+                    varying vec2 vUv;
+                    
+                    // Simplex noise function
+                    vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+                    
+                    float snoise(vec2 v) {
+                        const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+                                -0.577350269189626, 0.024390243902439);
+                        vec2 i  = floor(v + dot(v, C.yy));
+                        vec2 x0 = v -   i + dot(i, C.xx);
+                        vec2 i1;
+                        i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+                        vec4 x12 = x0.xyxy + C.xxzz;
+                        x12.xy -= i1;
+                        i = mod(i, 289.0);
+                        vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+                        + i.x + vec3(0.0, i1.x, 1.0 ));
+                        vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy),
+                                dot(x12.zw,x12.zw)), 0.0);
+                        m = m*m ;
+                        m = m*m ;
+                        vec3 x = 2.0 * fract(p * C.www) - 1.0;
+                        vec3 h = abs(x) - 0.5;
+                        vec3 ox = floor(x + 0.5);
+                        vec3 a0 = x - ox;
+                        m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+                        vec3 g;
+                        g.x  = a0.x  * x0.x  + h.x  * x0.y;
+                        g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+                        return 130.0 * dot(m, g);
+                    }
+                    
+                    void main() {
+                        // Create a subtle, flowing mist effect
+                        float noise1 = snoise(vec2(vUv.x * 3.0 + time * 0.02, vUv.y * 3.0 - time * 0.01)) * 0.5 + 0.5;
+                        float noise2 = snoise(vec2(vUv.x * 5.0 - time * 0.03, vUv.y * 5.0 + time * 0.02)) * 0.5 + 0.5;
+                        float noise3 = snoise(vec2(vUv.x * 7.0 + time * 0.04, vUv.y * 7.0 - time * 0.03)) * 0.5 + 0.5;
+                        
+                        // Combine noise layers for rich texture
+                        float finalNoise = noise1 * 0.5 + noise2 * 0.3 + noise3 * 0.2;
+                        
+                        // Create a subtle vignette effect
+                        vec2 center = vUv - 0.5;
+                        float vignette = 1.0 - dot(center, center) * 0.7;
+                        
+                        // Mouse interaction - subtle glow around cursor
+                        float mouseDistance = distance(vUv, mousePosition);
+                        float mouseGlow = smoothstep(0.3, 0.0, mouseDistance) * 0.15;
+                        
+                        // Create a subtle color gradient based on position and noise
+                        vec3 baseColor = vec3(0.04, 0.02, 0.06); // Dark purple-black
+                        vec3 accentColor = brandColor * 0.15; // Subtle brand color
+                        
+                        // Mix colors based on noise and position
+                        vec3 finalColor = mix(baseColor, accentColor, finalNoise * vignette * 0.3);
+                        
+                        // Add extremely subtle mouse glow
+                        finalColor = mix(finalColor, accentColor * 0.8, mouseGlow);
+                        
+                        // Apply vignette and very subtle noise texture
+                        gl_FragColor = vec4(finalColor, finalNoise * vignette * 0.4 + 0.05);
+                    }
+                `,
+          transparent: true,
+          depthWrite: false,
+          side: THREE.DoubleSide,
+        });
+
+        const mistMesh = new THREE.Mesh(mistGeometry, mistMaterial);
+        mistMesh.position.z = -500;
+        mistMesh.rotation.x = Math.PI * 0.1;
+        scene.add(mistMesh);
+
+        // 2. Ethereal Light Veils - Subtle flowing light planes
+        const veilsCount = 5;
+        const veils = [];
+
+        for (let i = 0; i < veilsCount; i++) {
+          const veilGeometry = new THREE.PlaneGeometry(2000, 2000, 1, 1);
+
+          // Custom shader for light veils
+          const veilMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+              time: { value: 0 },
+              depth: { value: i / veilsCount },
+              brandColor: { value: new THREE.Color(0x710bff) },
+            },
+            vertexShader: `
+                        varying vec2 vUv;
+                        void main() {
+                            vUv = uv;
+                            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                        }
+                    `,
+            fragmentShader: `
+                        uniform float time;
+                        uniform float depth;
+                        uniform vec3 brandColor;
+                        varying vec2 vUv;
+                        
+                        // Simplex noise function
+                        vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+                        
+                        float snoise(vec2 v) {
+                            const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+                                    -0.577350269189626, 0.024390243902439);
+                            vec2 i  = floor(v + dot(v, C.yy));
+                            vec2 x0 = v -   i + dot(i, C.xx);
+                            vec2 i1;
+                            i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+                            vec4 x12 = x0.xyxy + C.xxzz;
+                            x12.xy -= i1;
+                            i = mod(i, 289.0);
+                            vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+                            + i.x + vec3(0.0, i1.x, 1.0 ));
+                            vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy),
+                                    dot(x12.zw,x12.zw)), 0.0);
+                            m = m*m ;
+                            m = m*m ;
+                            vec3 x = 2.0 * fract(p * C.www) - 1.0;
+                            vec3 h = abs(x) - 0.5;
+                            vec3 ox = floor(x + 0.5);
+                            vec3 a0 = x - ox;
+                            m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+                            vec3 g;
+                            g.x  = a0.x  * x0.x  + h.x  * x0.y;
+                            g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+                            return 130.0 * dot(m, g);
+                        }
+                        
+                        void main() {
+                            // Create flowing veil effect with depth variation
+                            float speed = 0.05 - depth * 0.03; // Deeper veils move slower
+                            float scale = 2.0 + depth * 3.0; // Deeper veils have larger patterns
+                            
+                            float noise = snoise(vec2(vUv.x * scale + time * speed, vUv.y * scale - time * speed * 0.7)) * 0.5 + 0.5;
+                            
+                            // Create vertical light veil effect
+                            float veil = smoothstep(0.4, 0.6, noise);
+                            veil *= smoothstep(0.0, 0.3, vUv.y) * smoothstep(1.0, 0.7, vUv.y); // Fade top and bottom
+                            
+                            // Apply brand color with depth-based opacity
+                            float opacity = veil * 0.03 * (1.0 - depth * 0.5); // Very subtle
+                            vec3 color = brandColor * (0.5 + depth * 0.5); // Deeper veils are slightly darker
+                            
+                            gl_FragColor = vec4(color, opacity);
+                        }
+                    `,
+            transparent: true,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+          });
+
+          const veilMesh = new THREE.Mesh(veilGeometry, veilMaterial);
+          veilMesh.position.z = -400 + i * 50; // Space out the veils
+          veilMesh.rotation.x = Math.PI * 0.05;
+          scene.add(veilMesh);
+          veils.push({ mesh: veilMesh, material: veilMaterial });
+        }
+
+        // 3. Ethereal Dust - Ultra-subtle floating particles
+        const dustGeometry = new THREE.BufferGeometry();
+        const dustCount = 200; // Reduced count for subtlety
+
+        const positions = new Float32Array(dustCount * 3);
+        const scales = new Float32Array(dustCount);
+        const randomness = new Float32Array(dustCount);
+
+        for (let i = 0; i < dustCount; i++) {
+          // Position dust in a wide, flat volume
+          positions[i * 3] = (Math.random() - 0.5) * 1500;
+          positions[i * 3 + 1] = (Math.random() - 0.5) * 800;
+          positions[i * 3 + 2] = (Math.random() - 0.5) * 500 - 200;
+
+          // Vary the size and animation of each particle
+          scales[i] = Math.random() * 0.5 + 0.1; // Smaller particles
+          randomness[i] = Math.random();
+        }
+
+        dustGeometry.setAttribute(
+          "position",
+          new THREE.BufferAttribute(positions, 3)
+        );
+        dustGeometry.setAttribute(
+          "scale",
+          new THREE.BufferAttribute(scales, 1)
+        );
+        dustGeometry.setAttribute(
+          "randomness",
+          new THREE.BufferAttribute(randomness, 1)
+        );
+
+        // Custom shader for ethereal dust
+        const dustMaterial = new THREE.ShaderMaterial({
+          uniforms: {
+            time: { value: 0 },
+            brandColor: { value: new THREE.Color(0x710bff) },
+          },
+          vertexShader: `
+                    attribute float scale;
+                    attribute float randomness;
+                    varying float vScale;
+                    varying float vRandomness;
+                    uniform float time;
+                    
+                    // Simplex noise function
+                    vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+                    
+                    float snoise(vec2 v) {
+                        const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+                                -0.577350269189626, 0.024390243902439);
+                        vec2 i  = floor(v + dot(v, C.yy));
+                        vec2 x0 = v -   i + dot(i, C.xx);
+                        vec2 i1;
+                        i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+                        vec4 x12 = x0.xyxy + C.xxzz;
+                        x12.xy -= i1;
+                        i = mod(i, 289.0);
+                        vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+                        + i.x + vec3(0.0, i1.x, 1.0 ));
+                        vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy),
+                                dot(x12.zw,x12.zw)), 0.0);
+                        m = m*m ;
+                        m = m*m ;
+                        vec3 x = 2.0 * fract(p * C.www) - 1.0;
+                        vec3 h = abs(x) - 0.5;
+                        vec3 ox = floor(x + 0.5);
+                        vec3 a0 = x - ox;
+                        m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+                        vec3 g;
+                        g.x  = a0.x  * x0.x  + h.x  * x0.y;
+                        g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+                        return 130.0 * dot(m, g);
+                    }
+                    
+                    void main() {
+                        vScale = scale;
+                        vRandomness = randomness;
+                        
+                        // Create gentle floating motion
+                        float speed = 0.05 * randomness;
+                        float amplitude = 5.0 * randomness;
+                        
+                        // Calculate unique movement pattern for each particle
+                        float xOffset = sin(time * speed + randomness * 100.0) * amplitude;
+                        float yOffset = cos(time * speed * 0.7 + randomness * 100.0) * amplitude;
+                        float zOffset = sin(time * speed * 0.5 + randomness * 100.0) * amplitude;
+                        
+                        // Apply the offset to create gentle floating motion
+                        vec3 newPosition = position + vec3(xOffset, yOffset, zOffset);
+                        
+                        vec4 mvPosition = modelViewMatrix * vec4(newPosition, 1.0);
+                        gl_PointSize = scale * (300.0 / -mvPosition.z); // Size based on distance
+                        gl_Position = projectionMatrix * mvPosition;
+                    }
+                `,
+          fragmentShader: `
+                    varying float vScale;
+                    varying float vRandomness;
+                    uniform vec3 brandColor;
+                    uniform float time;
+                    
+                    void main() {
+                        // Create soft, glowing particles
+                        float strength = distance(gl_PointCoord, vec2(0.5));
+                        strength = 1.0 - strength;
+                        strength = pow(strength, 3.0);
+                        
+                        // Subtle pulsing effect
+                        float pulse = sin(time * 0.5 + vRandomness * 10.0) * 0.5 + 0.5;
+                        pulse = pulse * 0.2 + 0.8; // Limit the pulse range for subtlety
+                        
+                        // Create color variation
+                        vec3 color = mix(
+                            brandColor * 0.7, // Darker
+                            brandColor * 1.3, // Brighter
+                            vRandomness
+                        );
+                        
+                        // Very low opacity for subtlety
+                        float opacity = strength * vScale * 0.15 * pulse;
+                        
+                        gl_FragColor = vec4(color, opacity);
+                    }
+                `,
+          transparent: true,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending,
+        });
+
+        const dustParticles = new THREE.Points(dustGeometry, dustMaterial);
+        scene.add(dustParticles);
+
+        // Mouse interaction
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetMouseX = 0;
+        let targetMouseY = 0;
+
+        document.addEventListener("mousemove", (event) => {
+          // Normalize mouse coordinates
+          targetMouseX = (event.clientX / window.innerWidth) * 2 - 1;
+          targetMouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+
+          // Update shader uniforms for mouse interaction
+          mistMaterial.uniforms.mousePosition.value.x =
+            event.clientX / window.innerWidth;
+          mistMaterial.uniforms.mousePosition.value.y =
+            1.0 - event.clientY / window.innerHeight;
+        });
+
+        // Handle window resize
+        window.addEventListener("resize", () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          mistMaterial.uniforms.resolution.value.set(
+            window.innerWidth,
+            window.innerHeight
+          );
+        });
+
+        // Animation loop
+        const clock = new THREE.Clock();
+
+        const animate = () => {
+          requestAnimationFrame(animate);
+
+          const elapsedTime = clock.getElapsedTime();
+
+          // Smooth mouse movement
+          mouseX += (targetMouseX - mouseX) * 0.05;
+          mouseY += (targetMouseY - mouseY) * 0.05;
+
+          // Update time uniforms for all shaders
+          mistMaterial.uniforms.time.value = elapsedTime;
+          dustMaterial.uniforms.time.value = elapsedTime;
+
+          veils.forEach((veil) => {
+            veil.material.uniforms.time.value = elapsedTime;
+          });
+
+          // Subtle camera movement based on mouse
+          camera.position.x = mouseX * 50;
+          camera.position.y = mouseY * 50;
+          camera.lookAt(0, 0, -400);
+
+          // Render the scene
+          renderer.render(scene, camera);
+        };
+
+        animate();
+      };
+
+      // Create light pillars for an ultra-premium effect
+      const createLightPillars = () => {
+        const container = document.getElementById("light-pillars-container");
+        const pillarsCount = 8;
+        const pillars = [];
+
+        // Create light pillars
+        for (let i = 0; i < pillarsCount; i++) {
+          const pillar = document.createElement("div");
+          pillar.className = "light-pillar";
+
+          // Set random properties for each pillar
+          const height = Math.random() * 40 + 60; // Height between 60-100vh
+          const left = Math.random() * 100; // Position across the screen
+          const delay = Math.random() * 5; // Random delay for animation
+          const duration = Math.random() * 4 + 8; // Duration between 8-12s
+
+          // Apply styles
+          pillar.style.height = `${height}vh`;
+          pillar.style.left = `${left}%`;
+          pillar.style.bottom = "0";
+
+          // Add to container
+          container.appendChild(pillar);
+          pillars.push(pillar);
+
+          // Animate with GSAP
+          gsap.to(pillar, {
+            opacity: 0.3,
+            duration: 2,
+            delay: delay,
+            ease: "power2.out",
+          });
+
+          // Create continuous subtle animation
+          gsap.to(pillar, {
+            scaleY: 1.1,
+            opacity: 0.1,
+            duration: duration,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+          });
+        }
+      };
+
+      // Modal functionality
+      const onboardingButton = document.getElementById("onboardingButton");
+      const modalOverlay = document.getElementById("modalOverlay");
+      const modalContainer = document.getElementById("modalContainer");
+      const closeModal = document.getElementById("closeModal");
+
+      // Premium hover effect for button
+      onboardingButton.addEventListener("mousemove", function (e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // Set custom properties for dynamic lighting effect
+        this.style.setProperty("--x-pos", `${x}px`);
+        this.style.setProperty("--y-pos", `${y}px`);
+      });
+
+      // Open Modal Function with choreographed animations
+      function openModal() {
+        // Prevent body scrolling
+        document.body.style.overflow = "hidden";
+
+        // Show overlay
+        modalOverlay.classList.remove("hidden");
+        modalOverlay.classList.add("flex");
+
+        // Choreographed animation sequence
+        gsap.to(modalOverlay, {
+          opacity: 1,
+          duration: 0.4,
+          ease: "power2.out",
+        });
+
+        gsap.to(modalContainer, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.6,
+          delay: 0.2,
+          ease: "back.out(1.7)",
+        });
+
+        // Animate corner accents
+        const corners = document.querySelectorAll(".border-t-2, .border-b-2");
+        gsap.fromTo(
+          corners,
+          { opacity: 0, scale: 0.8 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.5,
+            delay: 0.4,
+            stagger: 0.1,
+            ease: "power2.out",
+          }
+        );
+      }
+
+      // Close Modal Function
+      function closeModalFunc() {
+        // Reverse animation sequence
+        gsap.to(modalContainer, {
+          opacity: 0,
+          scale: 0.95,
+          duration: 0.5,
+          ease: "power2.in",
+        });
+
+        gsap.to(modalOverlay, {
+          opacity: 0,
+          duration: 0.5,
+          delay: 0.2,
+          ease: "power2.in",
+          onComplete: () => {
+            modalOverlay.classList.add("hidden");
+            modalOverlay.classList.remove("flex");
+            document.body.style.overflow = "auto";
+          },
+        });
+      }
+
+      // Event Listeners
+      onboardingButton.addEventListener("click", openModal);
+      closeModal.addEventListener("click", closeModalFunc);
+
+      // Close on click outside modal
+      modalOverlay.addEventListener("click", function (e) {
+        if (e.target === modalOverlay) {
+          closeModalFunc();
+        }
+      });
+
+      // Close on Escape key
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && !modalOverlay.classList.contains("hidden")) {
+          closeModalFunc();
+        }
+      });
+
+      // Page load animations
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize ethereal background
+        initEtherealBackground();
+
+        // Fade in the body
+        gsap.to("body", {
+          opacity: 1,
+          duration: 1,
+          ease: "power2.out",
+        });
+
+        // Animate logos
+        gsap.to(".logo-container", {
+          opacity: 1,
+          duration: 1,
+          stagger: 0.2,
+          delay: 0.5,
+          ease: "power2.out",
+        });
+
+        // Animate hero section
+        gsap.to("#hero-section", {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          delay: 0.8,
+          ease: "power2.out",
+        });
+
+        // Initialize corner accents
+        const corners = document.querySelectorAll(".border-t-2, .border-b-2");
+        corners.forEach((corner) => {
+          corner.style.opacity = "0";
+          corner.style.transform = "scale(0.8)";
+        });
+      });
+    </script>
+
+    <!-- Form Embed Script -->
+    <script src="https://link.msgsndr.com/js/form_embed.js"></script>
+  </body>
+</html>
